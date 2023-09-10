@@ -3,7 +3,7 @@ import { VIDEOS_API } from "../utils/constants";
 import VideoCard from "./VideoCard";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setObject, clearObject } from '../utils/objectSlice';
+import { setObject } from '../utils/objectSlice';
 
 
 const VideosContainer = () => {
@@ -12,20 +12,18 @@ const VideosContainer = () => {
   const dispatch = useDispatch();
   const myObject = useSelector((state) => state.object);
 
-  useEffect(() => {
-    getVideos();
-    
-    console.log(myObject);
-  }, [page]);
-
   const getVideos = async () => {
     const data = await fetch(`${VIDEOS_API}?page=${page}`);
     const json = await data.json();
     // console.log(json.data.posts);
     setVideos(json.data.posts);
     dispatch(setObject(json.data.posts));
-    // console.log(myObject);
   };
+
+  useEffect(() => {
+    getVideos();
+    console.log(myObject);
+  }, [page]);
 
   const handleNextPage = () => {
     setPage(page + 1);
